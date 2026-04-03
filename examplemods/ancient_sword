@@ -1,0 +1,28 @@
+(function AncientSwordMod() {
+    ModAPI.meta.title("Ancient Sword");
+    ModAPI.meta.description("Renames the Diamond Sword to Ancient Sword");
+    ModAPI.meta.credits("By You");
+    ModAPI.meta.version("v1.0");
+
+    ModAPI.dedicatedServer.appendCode(function () {
+
+        // Hook into item display name
+        ModAPI.hooks.methods.nm_ItemStack_getDisplayName = function (original, itemStack) {
+            var name = original(itemStack);
+
+            try {
+                // Check if item is diamond sword
+                var item = itemStack.getItem();
+                var diamondSword = ModAPI.reflect.getClassById("net.minecraft.init.Items").fields.field_151040_l; 
+                // field_151040_l = diamond_sword in 1.12.2 mappings
+
+                if (item === diamondSword) {
+                    return ModAPI.util.str("Ancient Sword");
+                }
+            } catch (e) {}
+
+            return name;
+        };
+
+    });
+})();
